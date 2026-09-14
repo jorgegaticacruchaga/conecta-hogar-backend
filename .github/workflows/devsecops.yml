@@ -26,7 +26,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
-      - name: Escaneo de dependencias pom.xml
+      - name: Configurar Java 17
+        uses: actions/setup-java@v5
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: 'maven'
+      - name: Descargar dependencias en cache local
+        run: mvn dependency:tree
+      - name: Escaneo de dependencias pom.xml con Trivy
         uses: aquasecurity/trivy-action@master
         with:
           scan-type: 'fs'
