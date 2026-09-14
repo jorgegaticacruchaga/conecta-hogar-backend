@@ -1,13 +1,13 @@
-# Etapa 1: Build con Maven
-FROM maven:3.9.6-eclipse-temurin-17 AS build
+# Etapa 1: Build con Maven (Java 21)
+FROM maven:3.9.6-eclipse-temurin-21 AS build
 WORKDIR /app
 COPY pom.xml .
 RUN mvn dependency:go-offline
 COPY src ./src
 RUN mvn package -DskipTests
 
-# Etapa 2: Runtime liviano
-FROM eclipse-temurin:17-jre-alpine
+# Etapa 2: Runtime liviano (Java 21)
+FROM eclipse-temurin:21-jre-alpine
 WORKDIR /app
 COPY --from=build /app/target/*.jar app.jar
 EXPOSE 8080
